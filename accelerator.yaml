@@ -28,7 +28,7 @@ accelerator:
       defaultValue: "main"
 engine:
   merge:
-  - exclude: [ '**/*.java', "accelerator-deployment.yaml"]
+  - exclude: [ "accelerator-deployment.yaml"]
   - include: [ "config/workload.yaml" ]
     chain:
     - type: ReplaceText
@@ -39,24 +39,9 @@ engine:
         with: "#gitBranch"
       - text: tmf-product-catalog-management-api
         with: "#artifactId"
-  - include: [ "**/*.java", "**/*.properties" ]
-    chain:
-    - type: ReplaceText
-      regex:
-        pattern: com.vodafone
-        with: "#pkgName"
-    - type: RewritePath
-      regex: src/main/java/com/vodafone/(.*)
-      rewriteTo: "'src/main/java/' + #pkgName.replace('.', '/') + '/' + #g1"
-  - include: [ "pom.xml" ]
+  - include: [ "package.json" ]
     chain:
       - type: ReplaceText
         substitutions:
-        - text: "<groupId>com.vodafone</groupId>"
-          with: "'<groupId>' + #pkgName + '</groupId>'"
-        - text: tmf-product-catalog-management-api
+        - text: product-catalog-management
           with: "#artifactId"
-        - text: "<java.version>1.8</java.version>"
-          with: "'<java.version>' + #javaVersion + '</java.version>'"
-        - text: "<version>2.6.2</version>"
-          with: "'<version>' + #springBootVersion + '</version>'"
