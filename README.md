@@ -23,5 +23,5 @@ tanzu accelerator apply -f accelerator-deployment.yaml
 ```
 or
 ```
-tanzu accelerator create tmf-product-catalog-management-api-java --git-repository https://github.com/tsalm-pivotal/tm-forum-nodejs.git --git-branch main
+tanzu accelerator create tmf-product-catalog-management-api-nodejs --git-repository https://github.com/tsalm-pivotal/tm-forum-nodejs.git --git-branch main
 ```

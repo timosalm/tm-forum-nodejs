@@ -12,3 +12,10 @@ spec:
       url: https://github.com/tsalm-pivotal/tm-forum-nodejs.git
       ref:
         branch: main
+  build:
+    env:
+    - name: BP_NODE_VERSION
+      value: v8.17
+  env:
+    - name: BP_NODE_VERSION
+      value: v8.17
