@@ -5,6 +5,7 @@ metadata:
   labels:
     app.kubernetes.io/part-of: tmf-product-catalog-management-api
     apps.tanzu.vmware.com/workload-type: web
+    apps.tanzu.vmware.com/has-tests: true
 spec:
   source:
     git:
