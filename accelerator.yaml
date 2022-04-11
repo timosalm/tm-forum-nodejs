@@ -40,3 +40,9 @@ engine:
         substitutions:
         - text: product-catalog-management
           with: "#artifactId"
+  - include: [ "catalog/catalog-info.yaml" ]
+  chain:
+      - type: ReplaceText
+        substitutions:
+        - text: tmf-product-catalog-management-api
+          with: "#artifactId"
