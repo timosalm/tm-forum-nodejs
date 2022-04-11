@@ -7,11 +7,6 @@ accelerator:
     - nodejs
     - tmf620
   options:
-    - name: pkgName
-      label: Package name
-      inputType: text
-      defaultValue: "com.vodafone"
-      required: true
     - name: gitUrl
       label: Git repository URL
       display: true
