@@ -32,8 +32,8 @@
     "untildify": "^3.0.3"
   },
   "engines": {
-    "node": ">=8.10",
-    "npm": ">=6.0"
+    "node": "^8",
+    "npm": "^6"
   },
   "devDependencies": {
     "jest": "^24"
