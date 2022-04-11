@@ -1,0 +1,13 @@
+apiVersion: carto.run/v1alpha1
+kind: Workload
+metadata:
+  name: tmf-product-catalog-management-api
+  labels:
+    app.kubernetes.io/part-of: tmf-product-catalog-management-api
+    apps.tanzu.vmware.com/workload-type: web
+spec:
+  source:
+    git:
+      url: https://github.com/tsalm-pivotal/tm-forum-nodejs.git
+      ref:
+        branch: main
