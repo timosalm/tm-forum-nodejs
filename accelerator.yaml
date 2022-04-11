@@ -1,0 +1,62 @@
+accelerator:
+  displayName: TMF Product Catalog Management API (NodeJs)
+  description: Provides a standardized solution for rapidly adding partners’ products to an existing Catalog. It brings the capability for Service Providers to directly feed partners systems with the technical description of the products they propose to them.
+  iconUrl: https://projects.tmforum.org/wiki/download/attachments/35359579/API?version=3&modificationDate=1531062677000&api=v2
+  tags:
+    - javascript
+    - nodejs
+    - tmf620
+  options:
+    - name: pkgName
+      label: Package name
+      inputType: text
+      defaultValue: "com.vodafone"
+      required: true
+    - name: gitUrl
+      label: Git repository URL
+      display: true
+      description: Git repository URL of the application's source code
+      inputType: text
+      dataType: string
+      defaultValue: "https://github.com/tsalm-pivotal/tm-forum-nodejs.git"
+    - name: gitBranch
+      label: Git repository branch
+      display: true
+      description: Git repository branch of the application's source code
+      inputType: text
+      dataType: string
+      defaultValue: "main"
+engine:
+  merge:
+  - exclude: [ '**/*.java', "accelerator-deployment.yaml"]
+  - include: [ "config/workload.yaml" ]
+    chain:
+    - type: ReplaceText
+      substitutions:
+      - text: https://github.com/tsalm-pivotal/tm-forum-nodejs.git
+        with: "#gitUrl"
+      - text: main
+        with: "#gitBranch"
+      - text: tmf-product-catalog-management-api
+        with: "#artifactId"
+  - include: [ "**/*.java", "**/*.properties" ]
+    chain:
+    - type: ReplaceText
+      regex:
+        pattern: com.vodafone
+        with: "#pkgName"
+    - type: RewritePath
+      regex: src/main/java/com/vodafone/(.*)
+      rewriteTo: "'src/main/java/' + #pkgName.replace('.', '/') + '/' + #g1"
+  - include: [ "pom.xml" ]
+    chain:
+      - type: ReplaceText
+        substitutions:
+        - text: "<groupId>com.vodafone</groupId>"
+          with: "'<groupId>' + #pkgName + '</groupId>'"
+        - text: tmf-product-catalog-management-api
+          with: "#artifactId"
+        - text: "<java.version>1.8</java.version>"
+          with: "'<java.version>' + #javaVersion + '</java.version>'"
+        - text: "<version>2.6.2</version>"
+          with: "'<version>' + #springBootVersion + '</version>'"

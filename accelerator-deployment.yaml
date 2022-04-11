@@ -1,0 +1,9 @@
+apiVersion: accelerator.apps.tanzu.vmware.com/v1alpha1
+kind: Accelerator
+metadata:
+  name: tmf-product-catalog-management-api-nodejs
+spec:
+  git:
+    url: https://github.com/tsalm-pivotal/tm-forum-nodejs.git
+    ref:
+      branch: main
