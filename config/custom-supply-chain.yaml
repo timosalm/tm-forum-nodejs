@@ -40,10 +40,17 @@ spec:
     templateRef:
       kind: ClusterSourceTemplate
       name: testing-pipeline
-  - name: source-scanner
+  - name: source-api-compliance-test
     sources:
     - name: source
       resource: source-tester
+    templateRef:
+      kind: ClusterSourceTemplate
+      name: api-compliance-test-pipeline
+  - name: source-scanner
+    sources:
+    - name: source
+      resource: source-api-compliance-test
     templateRef:
       kind: ClusterSourceTemplate
       name: source-scanner-template

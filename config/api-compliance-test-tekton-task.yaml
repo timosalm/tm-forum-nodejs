@@ -1,0 +1,23 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  labels:
+    task: api-compliance-test
+  name: api-compliance-test
+  namespace: default
+spec:
+  params:
+  - name: source-url
+  - name: source-revision
+  steps:
+  - image: openapitools/openapi-diff
+    name: api-compliance-test
+    resources: {}
+    script: |-
+      cd `mktemp -d`
+      wget -qO- $(params.source-url) | tar xvz -m
+
+      java -jar /app/openapi-diff.jar https://tmf-open-api-table-documents.s3.eu-west-1.amazonaws.com/OpenApiTable/4.1.0/swagger/TMF620-ProductCatalog-v4.1.0.swagger.json  src/main/resources/openapi.yaml --fail-on-incompatible
+
+     
+      
