@@ -10,20 +10,12 @@ spec:
     apiVersion: carto.run/v1alpha1
     kind: Runnable
     metadata:
-      name: $(workload.metadata.name)$
+      name: $(workload.metadata.name)$-api-compliance-test
     spec:
       serviceAccountName: $(workload.spec.serviceAccountName)$
       runTemplateRef:
         name: tekton-api-compliance-test-taskrun
         kind: ClusterRunTemplate
-
-      selector:
-        resource:
-          apiVersion: tekton.dev/v1beta1
-          kind: Task
-        matchingLabels:
-          task: api-compliance-test
-
       inputs:
         source-url: $(sources.source.url)$
         source-revision: $(sources.source.revision)$

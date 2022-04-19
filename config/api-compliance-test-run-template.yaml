@@ -4,8 +4,8 @@ metadata:
   name: tekton-api-compliance-test-taskrun
 spec:
   outputs:
-    url: spec.params[?(@.name=="source-url")].value
-    revision: spec.params[?(@.name=="source-revision")].value
+    url: status.taskResults[?(@.name=="source-url")].value
+    revision: status.taskResults[?(@.name=="source-revision")].value
   template:
     apiVersion: tekton.dev/v1beta1
     kind: TaskRun
@@ -13,9 +13,22 @@ spec:
       generateName: $(runnable.metadata.name)$-
       labels: $(runnable.metadata.labels)$
     spec:
-      params:
-      - name: source-url
-        value: $(runnable.spec.inputs.source-url)$
-      - name: source-revision
-        value: $(runnable.spec.inputs.source-revision)$
-      taskRef: {name: $(selected.metadata.name)$}
+      taskSpec:
+        results:
+        - name: source-url
+        - name: source-revision
+        steps:
+        - name: test
+          image: maven:3-openjdk-11
+          script: |-
+            cd `mktemp -d`
+            wget -qO- $(runnable.spec.inputs.source-url)$ | tar xvz -m
+            mvn integration-test
+            cat target/openapi.json | tee /tekton/results/openapi-spec.json
+        - image: harbor.emea.end2end.link/vodafone/api-test-engine  
+          name: api-compliance-test
+          script: |-
+            node src/index.js -g TMF620 4.1.0
+            node src/index.js -c TMF620-4.1.0-WithExtensions.swagger.json /tekton/results/openapi-spec.json
+            echo -n $(runnable.spec.inputs.source-url)$ > /tekton/results/source-url
+            echo -n $(runnable.spec.inputs.source-revision)$ > /tekton/results/source-revision
