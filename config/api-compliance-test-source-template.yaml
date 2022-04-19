@@ -15,6 +15,7 @@ spec:
       serviceAccountName: $(workload.spec.serviceAccountName)$
       runTemplateRef:
         name: tekton-api-compliance-test-taskrun
+        kind: ClusterRunTemplate
 
       selector:
         resource:

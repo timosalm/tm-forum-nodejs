@@ -1,0 +1,14 @@
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  name: api-compliance-test-run
+  namespace: dev-space
+spec:
+  params:
+  - name: source-url
+    value: http://source-controller.flux-system.svc.cluster.local./gitrepository/dev-space/product-catalog-management-api-java/82ba67c5ebaa61025fe7603fb4877f9805b49616.tar.gz
+  - name: source-revision
+    value: main/82ba67c5ebaa61025fe7603fb4877f9805b49616
+  serviceAccountName: default
+  taskRef:
+    name: api-compliance-test
